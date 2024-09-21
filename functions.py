@@ -22,22 +22,20 @@ def display_items():
 
 
 def get_item_number():
-    #Prompts user for a valid item code and quantity.
-    display_items()
+    """
+    Prompts user to enter a valid item code and quantity.
+    Allows user to input 'done' to finish ordering.
+    """
+    display_items()  # Display menu items before asking for input
     while True:
-        order_item = input("Enter dish number and quantity (e.g., D1 2), or 'done' to finish: ")
-        if order_item == 'done':
+        order_item = input("Enter dish number and quantity (e.g., D1 2), or 'done' to finish: ").strip()
+        if order_item.lower() == 'done':  # If 'done' (any case), return 'done'
             return 'done'
-        try:
-            # Split user input into item_code and quantity
-            item_code, quantity = order_item.split()
-            quantity = int(quantity)  # Ensure quantity is an integer
-            if item_code in data.all_items:
-                return f"{item_code} {quantity}"  # Return the item code and quantity
-            else:
-                print("Invalid dish number. Please try again.")
-        except ValueError:
-            print("Invalid input format. Please enter a valid dish number and quantity.")
+        order_parts = order_item.split()
+        if len(order_parts) == 2 and order_parts[0] in data.all_items and order_parts[1].isdigit():
+            return order_item  # If valid dish number and quantity, return the input
+        else:
+            print("Invalid input format. Please enter a valid dish number and quantity, or 'done' to finish.")
       
 def display_current_order(order):
     #Displays the current items in the order.
