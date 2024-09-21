@@ -35,19 +35,27 @@ def show_main_menu():
 def make_order(orders):
     """
     Function to make a new order.
-    Adds items to the orders list.
+    Adds items to the orders list continuously until the user types 'done'.
     """
-    user_selection = functions.get_item_number()
-    item_code, quantity = user_selection.split()
-    quantity = int(quantity)
-    
-    item_name, item_price = functions.get_item_information(item_code)
-    
-    if item_name:
-        orders.append((item_code, item_name, item_price, quantity))
-        print(f"Added {quantity} x {item_name} to your order.")
-    else:
-        print("Invalid item selected.")
+    print("Enter 'done' when you are finished adding items.")
+    while True:
+        user_selection = functions.get_item_number()
+        if user_selection.lower() == 'done':  # Stop adding items when 'done' is typed
+            break
+        try:
+            item_code, quantity = user_selection.split()
+            quantity = int(quantity)
+        
+            item_name, item_price = functions.get_item_information(item_code)
+        
+            if item_name:
+                orders.append((item_code, item_name, item_price, quantity))
+                print(f"Added {quantity} x {item_name} to your order.")
+            else:
+                print("Invalid item selected.")
+        except ValueError:
+            print("Invalid input, enter in the format 'D1 2', or 'done' to finish.")
+
 
 def close_order(orders):
     """
