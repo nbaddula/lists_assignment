@@ -6,26 +6,46 @@ import data
 def get_item_information(item_code):
   """ this  function that will return the item name and price for a given item code.
     For example, find_menu_item('D2') should return Lemonade, and integer 3 as the result """
-  print(item_code)
   for item in data.menu_items:
     item_number, item_name, item_price = item.split(' ')
     if item_number == item_code:
       return item_name.encode("ascii", "ignore").decode(), int(item_price)
+  return None, 0
 
 def display_items():
-  pass
+  
+
+    print("Menu:")
+    for item in data.menu_items:
+        item_number, item_name, item_price = item.split(' ')
+        print(f"{item_number}: {item_name} - ${item_price}")
+
 
 def get_item_number():
-  while True:
-    print('Drinks', [d.replace('\u200b','') for d in data.menu_items if d[0] == 'D'])
-    print('Appetizers', [d.replace('\u200b','') for d in data.menu_items if d[0] == 'A'])
-    print('Salads:', [s.replace('\u200b','') for s in data.menu_items if s[0] == 'S'])
-    print('Entrees:', [e.replace('\u200b','') for e in data.menu_items if e[0] == 'E'])
-    print('Desserts:', [t.replace('\u200b','') for t in data.menu_items if t[0] == 'T'])
-    #write code for displaying the other dishes also
-    order_item = input('Enter dish number and quantity: ')
-    if order_item.split()[0] in data.all_items:
-      return order_item
-    else:
-      print('Invalid dish number.  Please try again')
-
+    #Prompts user for a valid item code and quantity.
+    display_items()
+    while True:
+        order_item = input("Enter dish number and quantity (e.g., D1 2), or 'done' to finish: ")
+        if order_item == 'done':
+            return 'done'
+        try:
+            # Split user input into item_code and quantity
+            item_code, quantity = order_item.split()
+            quantity = int(quantity)  # Ensure quantity is an integer
+            if item_code in data.all_items:
+                return f"{item_code} {quantity}"  # Return the item code and quantity
+            else:
+                print("Invalid dish number. Please try again.")
+        except ValueError:
+            print("Invalid input format. Please enter a valid dish number and quantity.")
+      
+def display_current_order(order):
+    #Displays the current items in the order.
+    print("Current order:")
+    
+    # Debugging statement to see the structure of the current order
+    print(f"Order list: {order}")
+    
+    for code, name, qty, price in order:
+        price = int(price)  # Ensure price is an integer
+        print(f"{code+name} - ${price }")
